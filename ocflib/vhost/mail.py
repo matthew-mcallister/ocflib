@@ -5,9 +5,7 @@ import pymysql
 import requests
 from cached_property import cached_property
 
-
-VHOST_MAIL_DB_PATH = '/home/s/st/staff/vhost/vhost-mail.conf'
-VHOST_MAIL_DB_URL = 'https://www.ocf.berkeley.edu/~staff/vhost-mail.conf'
+import ocflib.constants as constants
 
 
 class MailVirtualHost(namedtuple('MailVirtualHost', ('user', 'domain'))):
@@ -66,11 +64,11 @@ def get_mail_vhost_db():
     """Returns lines from the vhost database. Loaded from the filesystem (if
     available), or from the web if not."""
     try:
-        with open(VHOST_MAIL_DB_PATH) as f:
+        with open(constants.VHOST_MAIL_DB_PATH) as f:
             return list(map(str.strip, f))
     except IOError:
         # fallback to database loaded from web
-        return requests.get(VHOST_MAIL_DB_URL).text.split('\n')
+        return list(map(str.strip, requests.get(constants.VHOST_MAIL_DB_URL).text.split('\n')))
 
 
 def get_mail_vhosts():

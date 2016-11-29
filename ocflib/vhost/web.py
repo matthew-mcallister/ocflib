@@ -13,7 +13,7 @@ def get_vhost_db():
             return list(map(str.strip, f))
     except IOError:
         # fallback to database loaded from web
-        return requests.get(constants.VHOST_DB_URL).text.split('\n')
+        return list(map(str.strip, requests.get(constants.VHOST_DB_URL).text.split('\n')))
 
 
 def get_vhosts():
